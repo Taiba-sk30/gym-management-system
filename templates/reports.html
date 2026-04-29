@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<form method="GET" class="mb-4">
+
+    <select name="filter" class="form-control w-25 d-inline">
+        <option value="daily">Daily</option>
+        <option value="weekly">Weekly</option>
+        <option value="monthly">Monthly</option>
+        <option value="yearly">Yearly</option>
+    </select>
+
+    <button class="btn btn-primary">
+        Filter
+    </button>
+
+</form>
+
+
+<div class="container-fluid">
+
+    <!-- Title + Search + Export -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2>
+            <i class="fa-solid fa-chart-line"></i>
+            Reports Dashboard
+        </h2>
+
+        <div>
+            <input type="text" id="searchInput" class="form-control d-inline w-auto"
+                   placeholder="Search stats...">
+
+            <button onclick="exportCSV()" class="btn btn-success ms-2">
+                Export CSV
+            </button>
+        </div>
+    </div>
+
+
+    <!-- ========== CARDS ========== -->
+    <div class="row g-4" id="statsContainer">
+
+        <div class="col-md-4 stat-item">
+            <div class="card text-center shadow p-4 bg-primary text-white">
+                <h5>Total Trainers</h5>
+                <h2 id="trainers">{{ total_trainers }}</h2>
+            </div>
+        </div>
+
+        <div class="col-md-4 stat-item">
+            <div class="card text-center shadow p-4 bg-success text-white">
+                <h5>Total Trainees</h5>
+                <h2 id="trainees">{{ total_trainees }}</h2>
+            </div>
+        </div>
+
+        <div class="col-md-4 stat-item">
+            <div class="card text-center shadow p-4 bg-info text-white">
+                <h5>Present Today</h5>
+                <h2 id="present">{{ present_today }}</h2>
+            </div>
+        </div>
+
+        <div class="col-md-4 stat-item">
+            <div class="card text-center shadow p-4 bg-warning">
+                <h5>Total Payments</h5>
+                <h2 id="payments">{{ total_payments }}</h2>
+            </div>
+        </div>
+
+        <div class="col-md-4 stat-item">
+            <div class="card text-center shadow p-4 bg-dark text-white">
+                <h5>Total Revenue (₹)</h5>
+                <h2 id="revenue">{{ total_revenue }}</h2>
+            </div>
+        </div>
+
+        <div class="col-md-4 stat-item">
+            <div class="card text-center shadow p-4 bg-danger text-white">
+                <h5>Pending Payments</h5>
+                <h2 id="pending">{{ pending_payments }}</h2>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<hr class="my-5">
+
+<h4 class="mb-3">Statistics Chart</h4>
+
+<div style="height:400px;">
+    <canvas id="gymChart"></canvas>
+</div>
+
+
+
+<!-- ========== Chart JS ========== -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const dataValues = [
+    parseInt("{{ total_trainers|default(0) }}"),
+    parseInt("{{ total_trainees|default(0) }}"),
+    parseInt("{{ present_today|default(0) }}"),
+    parseInt("{{ total_payments|default(0) }}"),
+    parseInt("{{ pending_payments|default(0) }}")
+];
+
+
+const ctx = document.getElementById('gymChart');
+
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['Trainers', 'Trainees', 'Present', 'Payments', 'Pending'],
+        datasets: [{
+            label: 'Gym Stats',
+            data: dataValues
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false
+    }
+});
+
+
+
+/* ========== SEARCH FILTER ========== */
+document.getElementById("searchInput").addEventListener("keyup", function () {
+    let value = this.value.toLowerCase();
+    let items = document.querySelectorAll(".stat-item");
+
+    items.forEach(item => {
+        item.style.display =
+            item.innerText.toLowerCase().includes(value) ? "" : "none";
+    });
+});
+
+
+
+/* ========== EXPORT CSV ========== */
+function exportCSV() {
+
+    let rows = [
+        ["Title", "Value"],
+        ["Trainers", dataValues[0]],
+        ["Trainees", dataValues[1]],
+        ["Present Today", dataValues[2]],
+        ["Payments", dataValues[3]],
+        ["Pending", dataValues[4]]
+    ];
+
+    let csvContent = "data:text/csv;charset=utf-8,"
+        + rows.map(e => e.join(",")).join("\n");
+
+    let link = document.createElement("a");
+    link.href = encodeURI(csvContent);
+    link.download = "gym_report.csv";
+    link.click();
+}
+</script>
+
+{% endblock %}

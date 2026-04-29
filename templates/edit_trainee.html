@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h3>Edit Trainee</h3>
+
+<div class="card p-4 col-md-6">
+
+<form method="POST">
+
+    <label>Name</label>
+    <input type="text" name="name" value="{{ trainee.name }}" class="form-control">
+
+    <label class="mt-2">Phone</label>
+    <input type="text" name="phone" value="{{ trainee.phone }}" class="form-control">
+
+    <label class="mt-2">Age</label>
+    <input type="number" name="age" value="{{ trainee.age }}" class="form-control">
+
+    <label class="mt-2">Plan</label>
+    <input type="text" name="plan" value="{{ trainee.plan }}" class="form-control">
+
+    <label class="mt-2">Trainer</label>
+    <input type="text" name="trainer" value="{{ trainee.trainer }}" class="form-control">
+
+    <button class="btn btn-primary mt-3">Update</button>
+
+</form>
+
+</div>
+
+{% endblock %}

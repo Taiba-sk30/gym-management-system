@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h3 class="mb-4">Active Members</h3>
+
+<div class="card p-4 shadow">
+<table class="table table-bordered">
+
+<thead class="table-success">
+<tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Phone</th>
+    <th>Status</th>
+</tr>
+</thead>
+
+<tbody>
+{% for m in members %}
+<tr>
+    <td>{{ m.id }}</td>
+    <td>{{ m.name }}</td>
+    <td>{{ m.phone }}</td>
+    <td><span class="badge bg-success">Active</span></td>
+</tr>
+{% endfor %}
+</tbody>
+
+</table>
+</div>
+
+{% endblock %}

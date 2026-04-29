@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h3 class="mb-4">Renewals List</h3>
+
+<table class="table table-bordered shadow">
+    <thead class="table-warning">
+        <tr>
+            <th>ID</th>
+            <th>Amount</th>
+            <th>Date</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for r in data %}
+        <tr>
+            <td>{{ r.id }}</td>
+            <td>₹ {{ r.amount }}</td>
+            <td>{{ r.date }}</td>
+            <td>{{ r.status }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2 class="mb-4">
+    <i class="fa-solid fa-users"></i>
+    Member Management
+</h2>
+
+<div class="row">
+
+    <!-- Add Member -->
+    <div class="col-md-4">
+        <div class="card shadow p-4">
+
+            <h5>Add Member</h5>
+
+            <form method="POST">
+
+                <label>Name</label>
+                <input type="text" name="name" class="form-control" required>
+
+                <label class="mt-2">Phone</label>
+                <input type="text" name="phone" class="form-control" required>
+
+                <label class="mt-2">Age</label>
+                <input type="number" name="age" class="form-control">
+
+                <label class="mt-2">Plan</label>
+                <input type="text" name="plan" class="form-control">
+
+                <button class="btn btn-primary w-100 mt-3">
+                    Add Member
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+
+
+    <!-- Member List -->
+    <div class="col-md-8">
+        <div class="card shadow p-4">
+
+            <h5>Member List</h5>
+
+            <table class="table table-bordered table-hover">
+
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Plan</th>
+                        <th>Join Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for m in members %}
+                    <tr>
+                        <td>{{ m.id }}</td>
+                        <td>{{ m.name }}</td>
+                        <td>{{ m.phone }}</td>
+                        <td>{{ m.plan }}</td>
+                        <td>{{ m.join_date }}</td>
+                        <td>
+                            <span class="badge bg-success">
+                                {{ m.status }}
+                            </span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

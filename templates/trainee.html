@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- Heading -->
+    <h2 class="mb-4">
+        <i class="fa-solid fa-user-graduate"></i>
+        Trainee Management
+    </h2>
+
+    <div class="row">
+
+        <!-- =========================
+             ADD TRAINEE FORM
+        ========================== -->
+        <div class="col-md-4">
+
+            <div class="card shadow p-4">
+
+                <h5 class="mb-3 text-primary">
+                    <i class="fa-solid fa-user-plus"></i> Add Trainee
+                </h5>
+
+                <form method="POST">
+
+                    <!-- Name -->
+                    <label class="mt-2">Name</label>
+                    <input type="text" name="name" class="form-control" required>
+
+                    <!-- Phone -->
+                    <label class="mt-2">Phone</label>
+                    <input type="text" name="phone" class="form-control" required>
+
+                    <!-- Age -->
+                    <label class="mt-2">Age</label>
+                    <input type="number" name="age" class="form-control" required>
+
+                    <!-- Plan -->
+                    <label class="mt-2">Plan</label>
+                    <input type="text" name="plan" class="form-control" placeholder="Monthly / 3 Months">
+
+                    <!-- Trainer Dropdown (FIXED) -->
+                    <label class="mt-2">Trainer</label>
+                    <select name="trainer" class="form-control" required>
+                        <option value="">Select Trainer</option>
+
+                        {% for tr in trainers %}
+                        <option value="{{ tr.name }}">
+                            {{ tr.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+
+                    <!-- Submit -->
+                    <button class="btn btn-primary w-100 mt-4">
+                        Save Trainee
+                    </button>
+
+                </form>
+
+                <form method="GET" class="mb-3">
+                    <input type="text" name="search" class="form-control"
+                       placeholder="Search trainee by name...">
+                </form>
+
+            </div>
+        </div>
+
+
+
+        <!-- =========================
+             TRAINEE LIST TABLE
+        ========================== -->
+        <div class="col-md-8">
+
+            <div class="card shadow p-4">
+
+                <h5 class="mb-3 text-success">
+                    <i class="fa-solid fa-list"></i> Trainee List
+                </h5>
+
+                <table class="table table-hover table-bordered align-middle">
+
+                    <thead class="table-dark text-center">
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Age</th>
+                            <th>Plan</th>
+                            <th>Trainer</th>
+                            <th>Status</th>
+                            <th width="170">Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for t in trainees %}
+                        <tr class="text-center">
+
+                            <td>{{ t.id }}</td>
+                            <td>{{ t.name }}</td>
+                            <td>{{ t.phone }}</td>
+                            <td>{{ t.age }}</td>
+                            <td>{{ t.plan }}</td>
+                            <td>{{ t.trainer }}</td>
+
+                            <td>
+                                <span class="badge bg-success">
+                                    {{ t.status }}
+                                </span>
+                            </td>
+
+                            <td>
+
+                                <!-- Edit -->
+                                <a href="/edit_trainee/{{ t.id }}"
+                                   class="btn btn-warning btn-sm">
+                                    Edit
+                                </a>
+
+                                <!-- Delete -->
+                                <a href="/delete_trainee/{{ t.id }}"
+                                   class="btn btn-danger btn-sm"
+                                   onclick="return confirm('Delete this trainee?')">
+                                    Delete
+                                </a>
+
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+
+                        {% if not trainees %}
+                        <tr>
+                            <td colspan="8" class="text-center text-muted">
+                                No trainees added yet
+                            </td>
+                        </tr>
+                        {% endif %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
